@@ -1,13 +1,20 @@
 package org.yage.binding;
 
 import cn.hutool.core.lang.ClassScanner;
+import org.yage.session.Configuration;
 import org.yage.session.SqlSession;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class MapperRegister {
+public class MapperRegistry {
+    private Configuration configuration;
+
+    public MapperRegistry(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
     private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
     public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
@@ -28,7 +35,7 @@ public class MapperRegister {
     public <T> void addMapper(Class<T> type) {
         // type是接口才会注册
         if (type.isInterface()) {
-            if (hashMapper(type)) {
+            if (hasMapper(type)) {
                 // 不允许重复添加
                 throw new RuntimeException("Type " + type + " is already known to MapperRegister");
             }
@@ -36,7 +43,7 @@ public class MapperRegister {
         }
     }
 
-    private <T> boolean hashMapper(Class<T> type) {
+    public <T> boolean hasMapper(Class<T> type) {
         return knownMappers.containsKey(type);
     }
 

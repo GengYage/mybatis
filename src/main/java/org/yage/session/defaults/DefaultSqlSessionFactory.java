@@ -1,18 +1,18 @@
 package org.yage.session.defaults;
 
-import org.yage.binding.MapperRegister;
+import org.yage.session.Configuration;
 import org.yage.session.SqlSession;
 import org.yage.session.SqlSessionFactory;
 
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
-    private final MapperRegister mapperRegister;
+    private final Configuration configuration;
 
-    public DefaultSqlSessionFactory(MapperRegister mapperRegister) {
-        this.mapperRegister = mapperRegister;
+    public DefaultSqlSessionFactory(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
     public SqlSession openSession() {
-        return new DefaultSqlSession(mapperRegister);
+        return new DefaultSqlSession(configuration);
     }
 }

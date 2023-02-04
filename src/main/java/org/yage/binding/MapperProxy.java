@@ -6,6 +6,7 @@ import org.yage.session.SqlSession;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 映射器 InvocationHandler
@@ -16,10 +17,12 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     private final SqlSession sqlSession;
     private final Class<T> mapperInterface;
+    private final Map<Method, MapperMethod> methodCache;
 
-    public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface) {
+    public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface, Map<Method, MapperMethod> methodCache) {
         this.sqlSession = sqlSession;
         this.mapperInterface = mapperInterface;
+        this.methodCache = methodCache;
     }
 
     @Override
@@ -29,6 +32,14 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
             return method.invoke(this, args);
         }
 
-        return sqlSession.selectOne(method.getName(), args);
+        MapperMethod mapperMethod = cachedMapperMethod(method);
+
+        return mapperMethod.execute(sqlSession, args);
+    }
+
+    // 从缓存中查找
+    private MapperMethod cachedMapperMethod(Method method) {
+        return methodCache.computeIfAbsent(method,
+                key -> new MapperMethod(mapperInterface, method, sqlSession.getConfiguration()));
     }
 }
