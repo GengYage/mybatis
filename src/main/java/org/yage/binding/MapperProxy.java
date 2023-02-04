@@ -14,7 +14,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     private static final long serialVersionUID = 2438484912041033251L;
 
-    private SqlSession sqlSession;
+    private final SqlSession sqlSession;
     private final Class<T> mapperInterface;
 
     public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface) {
