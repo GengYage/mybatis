@@ -1,15 +1,13 @@
 import dao.IUserDao;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.yage.binding.MapperRegister;
 import org.yage.session.SqlSession;
 import org.yage.session.SqlSessionFactory;
 import org.yage.session.defaults.DefaultSqlSessionFactory;
 
-public class ApiTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(ApiTest.class);
+@Slf4j
+class ApiTest {
 
     @Test
     public void test_mapperProxyFactory() {
@@ -22,6 +20,6 @@ public class ApiTest {
 
         IUserDao mapper = sqlSession.getMapper(IUserDao.class);
         String aa = mapper.queryUserName("aa");
-        logger.info("result: {}", aa);
+        log.info("result: {}", aa);
     }
 }
