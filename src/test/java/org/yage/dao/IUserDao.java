@@ -1,5 +1,7 @@
 package org.yage.dao;
 
+import org.yage.po.User;
+
 public interface IUserDao {
-    String queryUserInfoById(String s);
+    User queryUserInfoById(Long id);
 }

@@ -3,8 +3,8 @@
 <mapper namespace="org.yage.dao.IUserDao">
 
     <select id="queryUserInfoById" parameterType="java.lang.Long" resultType="org.yage.po.User">
-        SELECT id, userId, userHead, createTime
-        FROM user
+        SELECT *
+        FROM mybatis_user
         where id = #{id}
     </select>
 
